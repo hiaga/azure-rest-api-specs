@@ -2023,12 +2023,16 @@
     "AzureBackupFindRestorableTimeRangesRequest": {
       "description": "List Restore Ranges Request",
       "required": [
+        "objectType",
         "sourceDataStoreType",
         "startTime",
         "endTime"
       ],
       "type": "object",
       "properties": {
+        "objectType":{
+            "type": "string"
+        },
         "sourceDataStoreType": {
           "description": "Gets or sets the type of the source data store.",
           "enum": [
