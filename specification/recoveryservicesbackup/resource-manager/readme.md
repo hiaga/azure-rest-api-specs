@@ -68,7 +68,7 @@ input-file:
 
 These settings apply only when `--tag=package-2022-09-preview` is specified on the command line.
 
-``` yaml $(tag) == 'package-2022-09-preview'
+```yaml $(tag) == 'package-2022-09-preview'
 input-file:
   - Microsoft.RecoveryServices/preview/2022-09-01-preview/bms.json
 ```
@@ -77,7 +77,7 @@ input-file:
 
 These settings apply only when `--tag=package-2022-06-01-preview` is specified on the command line.
 
-``` yaml $(tag) == 'package-2022-06-01-preview'
+```yaml $(tag) == 'package-2022-06-01-preview'
 input-file:
   - Microsoft.RecoveryServices/preview/2022-06-01-preview/bms.json
 ```
@@ -86,7 +86,7 @@ input-file:
 
 These settings apply only when `--tag=package-2022-04` is specified on the command line.
 
-``` yaml $(tag) == 'package-2022-04'
+```yaml $(tag) == 'package-2022-04'
 input-file:
   - Microsoft.RecoveryServices/stable/2022-04-01/bms.json
 ```
