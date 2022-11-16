@@ -4447,7 +4447,7 @@
             "name": "parameters",
             "in": "body",
             "description": "Request body for operation",
-            "required": true,
+            "required": false,
             "schema": {
               "$ref": "#/definitions/ResourceGuardProxyBaseResource"
             }
