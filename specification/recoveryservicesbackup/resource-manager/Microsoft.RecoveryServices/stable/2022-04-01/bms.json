@@ -12758,7 +12758,8 @@
       "description": "The name of the recovery services vault.",
       "required": true,
       "type": "string",
-      "x-ms-parameter-location": "method"
+      "x-ms-parameter-location": "method",
+      "pattern": "^\\w+$"
     },
     "ApiVersion": {
       "name": "api-version",
