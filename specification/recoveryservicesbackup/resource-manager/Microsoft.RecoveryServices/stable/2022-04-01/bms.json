@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "2022-04-01",
+    "version": "2022-10-01",
     "title": "RecoveryServicesBackupClient",
     "x-ms-code-generation-settings": {
       "internalConstructors": false
@@ -4056,6 +4056,62 @@
         }
       }
     },
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupDeletedProtectionContainers": {
+      "get": {
+        "tags": [
+          "SoftDeletedContainers"
+        ],
+        "description": "Lists the soft deleted containers registered to Recovery Services Vault.",
+        "operationId": "DeletedProtectionContainers_List",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/SubscriptionId"
+          },
+          {
+            "$ref": "#/parameters/ResourceGroupName"
+          },
+          {
+            "$ref": "#/parameters/VaultName"
+          },
+          {
+            "$ref": "#/parameters/ApiVersion"
+          },
+          {
+            "name": "$filter",
+            "in": "query",
+            "description": "OData filter options.",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ProtectionContainerResourceList"
+            }
+          },
+          "default": {
+            "description": "Error response describing why the operation failed.",
+            "schema": {
+              "$ref": "#/definitions/CloudError"
+            }
+          }
+        },
+        "x-ms-odata": "#/definitions/BMSContainerQueryObject",
+        "x-ms-pageable": {
+          "nextLinkName": "nextLink"
+        },
+        "x-ms-examples": {
+          "List Backup Protection Containers": {
+            "$ref": "./examples/AzureStorage/SoftDeletedContainers_List.json"
+          }
+        }
+      }
+    },
     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupSecurityPIN": {
       "post": {
         "tags": [
@@ -4386,6 +4442,15 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "parameters",
+            "in": "body",
+            "description": "Request body for operation",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ResourceGuardProxyBaseResource"
+            }
           }
         ],
         "responses": {
@@ -5012,7 +5077,8 @@
             "SQLDataBase",
             "AzureFileShare",
             "SAPHanaDatabase",
-            "SAPAseDatabase"
+            "SAPAseDatabase",
+            "SAPHanaDBInstance"
           ],
           "type": "string",
           "x-ms-enum": {
@@ -5065,7 +5131,8 @@
             "SQLDataBase",
             "AzureFileShare",
             "SAPHanaDatabase",
-            "SAPAseDatabase"
+            "SAPAseDatabase",
+            "SAPHanaDBInstance"
           ],
           "type": "string",
           "x-ms-enum": {
@@ -5387,11 +5454,13 @@
       "properties": {
         "friendlyName": {
           "description": "Friendly name of the VM represented by this backup item.",
-          "type": "string"
+          "type": "string",
+          "readOnly": true
         },
         "virtualMachineId": {
           "description": "Fully qualified ARM ID of the virtual machine represented by this item.",
-          "type": "string"
+          "type": "string",
+          "readOnly": true
         },
         "protectionStatus": {
           "description": "Backup status of this backup item.",
@@ -5425,7 +5494,8 @@
           "x-ms-enum": {
             "name": "HealthStatus",
             "modelAsString": true
-          }
+          },
+          "readOnly": true
         },
         "healthDetails": {
           "description": "Health details on this backup item.",
@@ -5451,11 +5521,13 @@
         "lastBackupTime": {
           "format": "date-time",
           "description": "Timestamp of the last backup operation on this backup item.",
-          "type": "string"
+          "type": "string",
+          "readOnly": true
         },
         "protectedItemDataId": {
           "description": "Data ID of the protected item.",
-          "type": "string"
+          "type": "string",
+          "readOnly": true
         },
         "extendedInfo": {
           "$ref": "#/definitions/AzureIaaSVMProtectedItemExtendedInfo",
@@ -5473,7 +5545,22 @@
       "properties": {
         "oldestRecoveryPoint": {
           "format": "date-time",
-          "description": "The oldest backup copy available for this backup item.",
+          "description": "The oldest backup copy available for this backup item across all tiers.",
+          "type": "string"
+        },
+        "oldestRecoveryPointInVault": {
+          "format": "date-time",
+          "description": "The oldest backup copy available for this backup item in vault tier",
+          "type": "string"
+        },
+        "oldestRecoveryPointInArchive": {
+          "format": "date-time",
+          "description": "The oldest backup copy available for this backup item in archive tier",
+          "type": "string"
+        },
+        "newestRecoveryPointInArchive": {
+          "format": "date-time",
+          "description": "The latest backup copy available for this backup item in archive tier",
           "type": "string"
         },
         "recoveryPointCount": {
@@ -5506,6 +5593,13 @@
         "retentionPolicy": {
           "$ref": "#/definitions/RetentionPolicy",
           "description": "Retention policy with the details on backup copy retention ranges."
+        },
+        "tieringPolicy": {
+          "description": "Tiering policy to automatically move RPs to another tier\r\nKey is Target Tier, defined in RecoveryPointTierType enum.\r\nTiering policy specifies the criteria to move RP to the target tier.",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/TieringPolicy"
+          }
         },
         "instantRpRetentionRangeInDays": {
           "format": "int32",
@@ -5736,7 +5830,8 @@
       "properties": {
         "friendlyName": {
           "description": "Friendly name of the DB represented by this backup item.",
-          "type": "string"
+          "type": "string",
+          "readOnly": true
         },
         "serverName": {
           "description": "Host/Cluster Name for instance or AG",
@@ -5752,7 +5847,8 @@
         },
         "protectionStatus": {
           "description": "Backup status of this backup item.",
-          "type": "string"
+          "type": "string",
+          "readOnly": true
         },
         "protectionState": {
           "description": "Backup state of this backup item.",
@@ -5832,7 +5928,22 @@
       "properties": {
         "oldestRecoveryPoint": {
           "format": "date-time",
-          "description": "The oldest backup copy available for this backup item.",
+          "description": "The oldest backup copy available for this backup item across all tiers.",
+          "type": "string"
+        },
+        "oldestRecoveryPointInVault": {
+          "format": "date-time",
+          "description": "The oldest backup copy available for this backup item in vault tier",
+          "type": "string"
+        },
+        "oldestRecoveryPointInArchive": {
+          "format": "date-time",
+          "description": "The oldest backup copy available for this backup item in archive tier",
+          "type": "string"
+        },
+        "newestRecoveryPointInArchive": {
+          "format": "date-time",
+          "description": "The latest backup copy available for this backup item in archive tier",
           "type": "string"
         },
         "recoveryPointCount": {
@@ -5869,6 +5980,16 @@
         }
       ],
       "x-ms-discriminator-value": "AzureVmWorkloadSAPHanaDatabase"
+    },
+    "AzureVmWorkloadSAPHanaDBInstanceProtectedItem": {
+      "description": "Azure VM workload-specific protected item representing SAP HANA DBInstance.",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/AzureVmWorkloadProtectedItem"
+        }
+      ],
+      "x-ms-discriminator-value": "AzureVmWorkloadSAPHanaDBInstance"
     },
     "AzureVmWorkloadSQLDatabaseProtectedItem": {
       "description": "Azure VM workload-specific protected item representing SQL Database.",
@@ -6060,7 +6181,9 @@
             "Full",
             "Log",
             "Differential",
-            "Incremental"
+            "Incremental",
+            "SnapshotFull",
+            "SnapshotCopyOnlyFull"
           ],
           "type": "string",
           "x-ms-enum": {
@@ -6333,7 +6456,9 @@
             "Differential",
             "FullAndDifferential",
             "All",
-            "Incremental"
+            "Incremental",
+            "SnapshotFull",
+            "SnapshotCopyOnlyFull"
           ],
           "type": "string",
           "x-ms-enum": {
@@ -7795,7 +7920,8 @@
             "SQLDataBase",
             "AzureFileShare",
             "SAPHanaDatabase",
-            "SAPAseDatabase"
+            "SAPAseDatabase",
+            "SAPHanaDBInstance"
           ],
           "type": "string",
           "x-ms-enum": {
@@ -8257,7 +8383,8 @@
           "x-ms-enum": {
             "name": "BackupManagementType",
             "modelAsString": true
-          }
+          },
+          "readOnly": true
         },
         "workloadType": {
           "description": "Type of workload this item represents.",
@@ -8276,13 +8403,15 @@
             "SQLDataBase",
             "AzureFileShare",
             "SAPHanaDatabase",
-            "SAPAseDatabase"
+            "SAPAseDatabase",
+            "SAPHanaDBInstance"
           ],
           "type": "string",
           "x-ms-enum": {
             "name": "DataSourceType",
             "modelAsString": true
-          }
+          },
+          "readOnly": true
         },
         "containerName": {
           "description": "Unique name of container",
@@ -8353,6 +8482,11 @@
         "policyName": {
           "description": "Name of the policy used for protection",
           "type": "string"
+        },
+        "softDeleteRetentionPeriod": {
+          "format": "int32",
+          "description": "Soft delete retention period in days",
+          "type": "integer"
         }
       },
       "discriminator": "protectedItemType"
@@ -8411,7 +8545,8 @@
             "SQLDataBase",
             "AzureFileShare",
             "SAPHanaDatabase",
-            "SAPAseDatabase"
+            "SAPAseDatabase",
+            "SAPHanaDBInstance"
           ],
           "type": "string",
           "x-ms-enum": {
@@ -8547,7 +8682,8 @@
             "SQLDataBase",
             "AzureFileShare",
             "SAPHanaDatabase",
-            "SAPAseDatabase"
+            "SAPAseDatabase",
+            "SAPHanaDBInstance"
           ],
           "type": "string",
           "x-ms-enum": {
@@ -9043,7 +9179,9 @@
             "Differential",
             "Log",
             "CopyOnlyFull",
-            "Incremental"
+            "Incremental",
+            "SnapshotFull",
+            "SnapshotCopyOnlyFull"
           ],
           "type": "string",
           "x-ms-enum": {
@@ -9058,6 +9196,13 @@
         "retentionPolicy": {
           "$ref": "#/definitions/RetentionPolicy",
           "description": "Retention policy with the details on backup copy retention ranges."
+        },
+        "tieringPolicy": {
+          "description": "Tiering policy to automatically move RPs to another tier.\r\nKey is Target Tier, defined in RecoveryPointTierType enum.\r\nTiering policy specifies the criteria to move RP to the target tier.",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/TieringPolicy"
+          }
         }
       }
     },
@@ -9919,6 +10064,26 @@
       ],
       "x-ms-discriminator-value": "SAPHanaSystem"
     },
+    "AzureVmWorkloadSAPHanaDBInstance": {
+      "description": "Azure VM workload-specific protectable item representing SAP HANA Dbinstance.",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/AzureVmWorkloadProtectableItem"
+        }
+      ],
+      "x-ms-discriminator-value": "SAPHanaDBInstance"
+    },
+    "AzureVmWorkloadSAPHanaHSR": {
+      "description": "Azure VM workload-specific protectable item representing SAP HANA Dbinstance.",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/AzureVmWorkloadProtectableItem"
+        }
+      ],
+      "x-ms-discriminator-value": "SAPHanaHSR"
+    },
     "AzureVmWorkloadSAPHanaSystemWorkloadItem": {
       "description": "Azure VM workload-specific workload item representing SAP HANA System.",
       "type": "object",
@@ -10006,7 +10171,9 @@
             "Differential",
             "Log",
             "CopyOnlyFull",
-            "Incremental"
+            "Incremental",
+            "SnapshotFull",
+            "SnapshotCopyOnlyFull"
           ],
           "type": "string",
           "x-ms-enum": {
@@ -10141,7 +10308,8 @@
             "SAPHanaSystem",
             "SAPHanaDatabase",
             "SAPAseSystem",
-            "SAPAseDatabase"
+            "SAPAseDatabase",
+            "SAPHanaDBInstance"
           ],
           "type": "string",
           "x-ms-enum": {
@@ -10232,7 +10400,8 @@
             "SQLDataBase",
             "AzureFileShare",
             "SAPHanaDatabase",
-            "SAPAseDatabase"
+            "SAPAseDatabase",
+            "SAPHanaDBInstance"
           ],
           "type": "string",
           "x-ms-enum": {
@@ -10379,7 +10548,8 @@
             "SQLDataBase",
             "AzureFileShare",
             "SAPHanaDatabase",
-            "SAPAseDatabase"
+            "SAPAseDatabase",
+            "SAPHanaDBInstance"
           ],
           "type": "string",
           "x-ms-enum": {
@@ -10629,7 +10799,8 @@
             "SQLDataBase",
             "AzureFileShare",
             "SAPHanaDatabase",
-            "SAPAseDatabase"
+            "SAPAseDatabase",
+            "SAPHanaDBInstance"
           ],
           "type": "string",
           "x-ms-enum": {
@@ -10952,7 +11123,8 @@
             "VMAppContainer",
             "SQLAGWorkLoadContainer",
             "StorageContainer",
-            "GenericContainer"
+            "GenericContainer",
+            "HanaHSRContainer"
           ],
           "type": "string",
           "x-ms-enum": {
@@ -11018,7 +11190,8 @@
             "SQLDataBase",
             "AzureFileShare",
             "SAPHanaDatabase",
-            "SAPAseDatabase"
+            "SAPAseDatabase",
+            "SAPHanaDBInstance"
           ],
           "type": "string",
           "x-ms-enum": {
@@ -11068,7 +11241,8 @@
             "SQLDataBase",
             "AzureFileShare",
             "SAPHanaDatabase",
-            "SAPAseDatabase"
+            "SAPAseDatabase",
+            "SAPHanaDBInstance"
           ],
           "type": "string",
           "x-ms-enum": {
@@ -11147,7 +11321,8 @@
             "SAPHanaSystem",
             "SAPHanaDatabase",
             "SAPAseSystem",
-            "SAPAseDatabase"
+            "SAPAseDatabase",
+            "SAPHanaDBInstance"
           ],
           "type": "string",
           "x-ms-enum": {
@@ -11172,7 +11347,8 @@
             "SQLDataBase",
             "AzureFileShare",
             "SAPHanaDatabase",
-            "SAPAseDatabase"
+            "SAPAseDatabase",
+            "SAPHanaDBInstance"
           ],
           "type": "string",
           "x-ms-enum": {
@@ -11623,7 +11799,8 @@
             "SQLDataBase",
             "AzureFileShare",
             "SAPHanaDatabase",
-            "SAPAseDatabase"
+            "SAPAseDatabase",
+            "SAPHanaDBInstance"
           ],
           "type": "string",
           "x-ms-enum": {
@@ -11905,7 +12082,7 @@
           "type": "string",
           "readOnly": false,
           "x-ms-enum": {
-            "name": "ContainerType",
+            "name": "protectableContainerType",
             "modelAsString": false
           }
         },
@@ -12014,7 +12191,7 @@
           ],
           "type": "string",
           "x-ms-enum": {
-            "name": "ContainerType",
+            "name": "protectableContainerType",
             "modelAsString": true
           }
         },
@@ -12509,6 +12686,46 @@
           }
         }
       }
+    },
+    "TieringPolicy": {
+      "description": "Tiering Policy for a target tier.\r\nIf the policy is not specified for a given target tier, service retains the existing configured tiering policy for that tier",
+      "type": "object",
+      "properties": {
+        "tieringMode": {
+          "description": "Tiering Mode to control automatic tiering of recovery points. Supported values are:\r\n1. TierRecommended: Tier all recovery points recommended to be tiered\r\n2. TierAfter: Tier all recovery points after a fixed period, as specified in duration + durationType below.\r\n3. DoNotTier: Do not tier any recovery points",
+          "enum": [
+            "Invalid",
+            "TierRecommended",
+            "TierAfter",
+            "DoNotTier"
+          ],
+          "type": "string",
+          "x-ms-enum": {
+            "name": "TieringMode",
+            "modelAsString": true
+          }
+        },
+        "duration": {
+          "format": "int32",
+          "description": "Number of days/weeks/months/years to retain backups in current tier before tiering.\r\nUsed only if TieringMode is set to TierAfter",
+          "type": "integer"
+        },
+        "durationType": {
+          "description": "Retention duration type: days/weeks/months/years\r\nUsed only if TieringMode is set to TierAfter",
+          "enum": [
+            "Invalid",
+            "Days",
+            "Weeks",
+            "Months",
+            "Years"
+          ],
+          "type": "string",
+          "x-ms-enum": {
+            "name": "RetentionDurationType",
+            "modelAsString": true
+          }
+        }
+      }
     }
   },
   "parameters": {
@@ -12541,7 +12758,8 @@
       "description": "The name of the recovery services vault.",
       "required": true,
       "type": "string",
-      "x-ms-parameter-location": "method"
+      "x-ms-parameter-location": "method",
+      "pattern": "^\\w+$"
     },
     "ApiVersion": {
       "name": "api-version",
