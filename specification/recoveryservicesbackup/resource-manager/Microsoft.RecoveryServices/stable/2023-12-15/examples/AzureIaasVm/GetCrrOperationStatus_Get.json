@@ -1,12 +1,9 @@
 {
   "parameters": {
     "subscriptionId": "00000000-0000-0000-0000-000000000000",
-    "azureRegion": "southeastasia",
+    "location": "southeastasia",
     "operationId": "00000000-0000-0000-0000-000000000000",
-    "api-version": "2023-12-15",
-    "parameters": {
-      "resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.Compute/VirtualMachines/testVm"
-    }
+    "api-version": "2023-12-15"
   },
   "responses": {
     "200": {

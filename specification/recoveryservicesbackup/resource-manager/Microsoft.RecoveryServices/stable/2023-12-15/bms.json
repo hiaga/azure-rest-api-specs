@@ -30,16 +30,16 @@
         ],
         "parameters": [
           {
-            "$ref": "#/parameters/ApiVersion"
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/SubscriptionIdParameter"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/ResourceGroupNameParameter"
           },
           {
             "$ref": "#/parameters/VaultName"
           },
           {
-            "$ref": "#/parameters/ResourceGroupName"
-          },
-          {
-            "$ref": "#/parameters/SubscriptionId"
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/ApiVersionParameter"
           },
           {
             "name": "$filter",
@@ -84,7 +84,7 @@
         }
       }
     },
-    "/subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/locations/{azureRegion}/backupAadProperties": {
+    "/subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/locations/{location}/backupAadProperties": {
       "get": {
         "tags": [
           "AadProperties"
@@ -96,13 +96,13 @@
         ],
         "parameters": [
           {
-            "$ref": "#/parameters/ApiVersion"
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/SubscriptionIdParameter"
           },
           {
-            "$ref": "#/parameters/AzureRegion"
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/LocationParameter"
           },
           {
-            "$ref": "#/parameters/SubscriptionId"
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/ApiVersionParameter"
           },
           {
             "name": "$filter",
@@ -134,7 +134,7 @@
         }
       }
     },
-    "/subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/locations/{azureRegion}/backupCrossRegionRestore": {
+    "/subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/locations/{location}/backupCrossRegionRestore": {
       "post": {
         "tags": [
           "CrossRegionRestore"
@@ -146,13 +146,13 @@
         ],
         "parameters": [
           {
-            "$ref": "#/parameters/ApiVersion"
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/SubscriptionIdParameter"
           },
           {
-            "$ref": "#/parameters/AzureRegion"
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/LocationParameter"
           },
           {
-            "$ref": "#/parameters/SubscriptionId"
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/ApiVersionParameter"
           },
           {
             "name": "parameters",
@@ -192,7 +192,7 @@
         }
       }
     },
-    "/subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/locations/{azureRegion}/backupCrrJob": {
+    "/subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/locations/{location}/backupCrrJob": {
       "post": {
         "tags": [
           "CrrJobDetails"
@@ -204,13 +204,13 @@
         ],
         "parameters": [
           {
-            "$ref": "#/parameters/ApiVersion"
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/SubscriptionIdParameter"
           },
           {
-            "$ref": "#/parameters/AzureRegion"
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/LocationParameter"
           },
           {
-            "$ref": "#/parameters/SubscriptionId"
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/ApiVersionParameter"
           },
           {
             "name": "parameters",
@@ -243,7 +243,64 @@
         }
       }
     },
-    "/subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/locations/{azureRegion}/backupCrrJobs": {
+    "/subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/locations/{location}/backupCrrJobCancel": {
+      "post": {
+        "tags": [
+          "BackupCrrJobCancel"
+        ],
+        "summary": "Cancels a CRR job from the target region.",
+        "operationId": "BackupCrrJob_Cancel",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/SubscriptionIdParameter"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/LocationParameter"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/ApiVersionParameter"
+          },
+          {
+            "name": "parameters",
+            "in": "body",
+            "description": "Backup CRR Job request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CrrJobRequest"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "headers": {
+              "Location": {
+                "type": "string"
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Error response describing why the operation failed.",
+            "schema": {
+              "$ref": "#/definitions/NewErrorResponse"
+            }
+          }
+        },
+        "x-ms-examples": {
+          "Cancel Cross Region Restore Jobs in the secondary region": {
+            "$ref": "./examples/AzureIaasVm/BackupCrrJob_Cancel.json"
+          }
+        },
+        "x-ms-long-running-operation": true
+      }
+    },
+    "/subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/locations/{location}/backupCrrJobs": {
       "post": {
         "tags": [
           "BackupCrrJobs"
@@ -255,13 +312,13 @@
         ],
         "parameters": [
           {
-            "$ref": "#/parameters/ApiVersion"
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/SubscriptionIdParameter"
           },
           {
-            "$ref": "#/parameters/AzureRegion"
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/LocationParameter"
           },
           {
-            "$ref": "#/parameters/SubscriptionId"
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/ApiVersionParameter"
           },
           {
             "name": "parameters",
@@ -312,7 +369,7 @@
         }
       }
     },
-    "/subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/locations/{azureRegion}/backupCrrOperationResults/{operationId}": {
+    "/subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/locations/{location}/backupCrrOperationResults/{operationId}": {
       "get": {
         "tags": [
           "CrrOperationResults"
@@ -323,19 +380,19 @@
         ],
         "parameters": [
           {
-            "$ref": "#/parameters/ApiVersion"
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/SubscriptionIdParameter"
           },
           {
-            "$ref": "#/parameters/AzureRegion"
-          },
-          {
-            "$ref": "#/parameters/SubscriptionId"
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/LocationParameter"
           },
           {
             "name": "operationId",
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/ApiVersionParameter"
           }
         ],
         "responses": {
@@ -359,7 +416,7 @@
         }
       }
     },
-    "/subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/locations/{azureRegion}/backupCrrOperationsStatus/{operationId}": {
+    "/subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/locations/{location}/backupCrrOperationsStatus/{operationId}": {
       "get": {
         "tags": [
           "CrrOperationStatus"
@@ -370,19 +427,19 @@
         ],
         "parameters": [
           {
-            "$ref": "#/parameters/ApiVersion"
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/SubscriptionIdParameter"
           },
           {
-            "$ref": "#/parameters/AzureRegion"
-          },
-          {
-            "$ref": "#/parameters/SubscriptionId"
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/LocationParameter"
           },
           {
             "name": "operationId",
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/ApiVersionParameter"
           }
         ],
         "responses": {
@@ -418,16 +475,13 @@
         ],
         "parameters": [
           {
-            "$ref": "#/parameters/ApiVersion"
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/SubscriptionIdParameter"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/ResourceGroupNameParameter"
           },
           {
             "$ref": "#/parameters/VaultName"
-          },
-          {
-            "$ref": "#/parameters/ResourceGroupName"
-          },
-          {
-            "$ref": "#/parameters/SubscriptionId"
           },
           {
             "name": "fabricName",
@@ -456,6 +510,9 @@
             "description": "Recovery Point Id",
             "required": true,
             "type": "string"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/ApiVersionParameter"
           },
           {
             "name": "parameters",
@@ -504,16 +561,16 @@
         ],
         "parameters": [
           {
-            "$ref": "#/parameters/ApiVersion"
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/SubscriptionIdParameter"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/ResourceGroupNameParameter"
           },
           {
             "$ref": "#/parameters/VaultName"
           },
           {
-            "$ref": "#/parameters/ResourceGroupName"
-          },
-          {
-            "$ref": "#/parameters/SubscriptionId"
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/ApiVersionParameter"
           }
         ],
         "responses": {
@@ -547,16 +604,16 @@
         ],
         "parameters": [
           {
-            "$ref": "#/parameters/ApiVersion"
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/SubscriptionIdParameter"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/ResourceGroupNameParameter"
           },
           {
             "$ref": "#/parameters/VaultName"
           },
           {
-            "$ref": "#/parameters/ResourceGroupName"
-          },
-          {
-            "$ref": "#/parameters/SubscriptionId"
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/ApiVersionParameter"
           },
           {
             "name": "parameters",
@@ -596,16 +653,16 @@
         "operationId": "BackupResourceStorageConfigs_patch",
         "parameters": [
           {
-            "$ref": "#/parameters/ApiVersion"
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/SubscriptionIdParameter"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/ResourceGroupNameParameter"
           },
           {
             "$ref": "#/parameters/VaultName"
           },
           {
-            "$ref": "#/parameters/ResourceGroupName"
-          },
-          {
-            "$ref": "#/parameters/SubscriptionId"
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/ApiVersionParameter"
           },
           {
             "name": "parameters",
@@ -647,16 +704,13 @@
         ],
         "parameters": [
           {
-            "$ref": "#/parameters/ApiVersion"
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/SubscriptionIdParameter"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/ResourceGroupNameParameter"
           },
           {
             "$ref": "#/parameters/VaultName"
-          },
-          {
-            "$ref": "#/parameters/ResourceGroupName"
-          },
-          {
-            "$ref": "#/parameters/SubscriptionId"
           },
           {
             "name": "fabricName",
@@ -678,6 +732,9 @@
             "description": "Backed up item whose backup copies are to be fetched.",
             "required": true,
             "type": "string"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/ApiVersionParameter"
           },
           {
             "name": "$filter",
@@ -724,16 +781,13 @@
         ],
         "parameters": [
           {
-            "$ref": "#/parameters/ApiVersion"
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/SubscriptionIdParameter"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/ResourceGroupNameParameter"
           },
           {
             "$ref": "#/parameters/VaultName"
-          },
-          {
-            "$ref": "#/parameters/ResourceGroupName"
-          },
-          {
-            "$ref": "#/parameters/SubscriptionId"
           },
           {
             "name": "fabricName",
@@ -762,6 +816,9 @@
             "description": "RecoveryPointID represents the backed up data to be fetched.",
             "required": true,
             "type": "string"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/ApiVersionParameter"
           }
         ],
         "responses": {
@@ -797,16 +854,16 @@
         ],
         "parameters": [
           {
-            "$ref": "#/parameters/ApiVersion"
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/SubscriptionIdParameter"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/ResourceGroupNameParameter"
           },
           {
             "$ref": "#/parameters/VaultName"
           },
           {
-            "$ref": "#/parameters/ResourceGroupName"
-          },
-          {
-            "$ref": "#/parameters/SubscriptionId"
+            "$ref": "../../../../../common-types/resource-management/v3/types.json#/parameters/ApiVersionParameter"
           },
           {
             "name": "$filter",
@@ -2433,7 +2490,8 @@
       "properties": {
         "resourceId": {
           "description": "Entire ARM resource id of the resource",
-          "type": "string"
+          "type": "string",
+          "format": "arm-id"
         },
         "jobName": {
           "description": "Job Name of the job to be fetched",
