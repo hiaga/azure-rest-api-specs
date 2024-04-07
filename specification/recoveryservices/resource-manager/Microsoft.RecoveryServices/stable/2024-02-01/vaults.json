@@ -445,11 +445,6 @@
             "$ref": "#/parameters/VaultName"
           },
           {
-            "name": "x-ms-authorization-auxiliary",
-            "in": "header",
-            "type": "string"
-          },
-          {
             "name": "vault",
             "in": "body",
             "description": "Recovery Services Vault to be created.",
@@ -457,6 +452,11 @@
             "schema": {
               "$ref": "#/definitions/Vault"
             }
+          },
+          {
+            "name": "x-ms-authorization-auxiliary",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
@@ -575,11 +575,6 @@
             "$ref": "#/parameters/VaultName"
           },
           {
-            "name": "x-ms-authorization-auxiliary",
-            "in": "header",
-            "type": "string"
-          },
-          {
             "name": "vault",
             "in": "body",
             "description": "Recovery Services Vault to be created.",
@@ -587,6 +582,11 @@
             "schema": {
               "$ref": "#/definitions/PatchVault"
             }
+          },
+          {
+            "name": "x-ms-authorization-auxiliary",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
